@@ -1,10 +1,23 @@
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+
+import Navbar from "./components/layout/Navbar";
+import Footer from "./components/layout/Footer";
+
+import Landing from "./pages/landing";
+
 function App() {
   return (
-    <div>
-      <h1>CRM360</h1>
-      <h2>Customer Relationship Management System</h2>
-      <p>Welcome to CRM360!</p>
-    </div>
+    <BrowserRouter>
+
+      <Navbar />
+
+      <Routes>
+        <Route path="/" element={<Landing />} />
+      </Routes>
+
+      <Footer />
+
+    </BrowserRouter>
   );
 }
 

@@ -1,9 +1,27 @@
 function Footer() {
+
   return (
-    <footer className="bg-black text-white text-center py-4 mt-20">
-      © 2026 CRM360
+
+    <footer
+      className="
+      h-10
+      bg-white
+      border-t
+      flex
+      items-center
+      justify-center
+      text-xs
+      text-gray-500
+      "
+    >
+
+      © {new Date().getFullYear()} CRM360. All rights reserved.
+
     </footer>
+
   );
+
 }
+
 
 export default Footer;

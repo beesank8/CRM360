@@ -1,11 +1,7 @@
 function Footer() {
   return (
-    <footer className="bg-black text-white py-5 text-center">
-
-      <p>
-        © 2026 CRM360. All Rights Reserved.
-      </p>
-
+    <footer className="bg-black text-white text-center py-4 mt-20">
+      © 2026 CRM360
     </footer>
   );
 }

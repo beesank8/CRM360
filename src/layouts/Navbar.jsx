@@ -1,26 +1,29 @@
+import { Link } from "react-router-dom";
+
 function Navbar() {
   return (
-    <nav className="bg-white shadow-md px-10 py-5 flex justify-between items-center">
+    <nav className="flex justify-between items-center p-5 bg-black text-white">
 
-      {/* Logo */}
-      <div>
-        <h1 className="text-3xl font-bold text-blue-600">
-          CRM360
-        </h1>
-      </div>
+      <Link to="/" className="text-2xl font-bold">
+        CRM360
+      </Link>
 
+      <div className="flex gap-5">
 
-      {/* Buttons */}
-      <div className="flex gap-4">
-
-        <button className="px-5 py-2 border border-blue-600 text-blue-600 rounded-lg hover:bg-blue-600 hover:text-white">
+        <Link 
+          to="/login"
+          className="border px-5 py-2 rounded"
+        >
           Login
-        </button>
+        </Link>
 
 
-        <button className="px-5 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+        <Link
+          to="/register"
+          className="bg-blue-600 px-5 py-2 rounded"
+        >
           Get Started
-        </button>
+        </Link>
 
       </div>
 

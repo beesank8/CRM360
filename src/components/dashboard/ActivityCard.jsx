@@ -1,5 +1,6 @@
 import {
   Users,
+  UserPlus,
   Clock
 } from "lucide-react";
 
@@ -12,19 +13,16 @@ import ActivityDrawer from "./ActivityDrawer";
 function ActivityCard({ stats }) {
 
 
-  const [showActivities, setShowActivities] = useState(false);
+
+  const [showActivities, setShowActivities] =
+    useState(false);
 
 
 
-  const activities = stats?.activities || [
 
-    {
-      title: "No new activity",
-      description: "Waiting for updates",
-      time: "Just now"
-    }
+  const activities =
+    stats?.activities || [];
 
-  ];
 
 
 
@@ -32,7 +30,9 @@ function ActivityCard({ stats }) {
 
   return (
 
+
     <div
+
       className="
       bg-white
       rounded-xl
@@ -42,7 +42,9 @@ function ActivityCard({ stats }) {
       p-4
       h-full
       "
+
     >
+
 
 
 
@@ -50,22 +52,28 @@ function ActivityCard({ stats }) {
       {/* HEADER */}
 
 
+
       <div
+
         className="
         flex
         justify-between
         items-center
         mb-3
         "
+
       >
 
 
+
         <h2
+
           className="
           text-base
           font-semibold
           text-gray-800
           "
+
         >
 
           Recent Activity
@@ -75,11 +83,15 @@ function ActivityCard({ stats }) {
 
 
 
+
+
         <button
 
-          onClick={() =>
+
+          onClick={()=>
             setShowActivities(true)
           }
+
 
           className="
           text-xs
@@ -87,15 +99,21 @@ function ActivityCard({ stats }) {
           hover:underline
           font-medium
           "
+
         >
 
           View All
+
 
         </button>
 
 
 
+
+
       </div>
+
+
 
 
 
@@ -106,101 +124,177 @@ function ActivityCard({ stats }) {
       {/* ACTIVITY LIST */}
 
 
+
       <div
+
         className="
         space-y-3
         "
+
       >
 
 
-        {
-          activities
-          .slice(0,3)
-          .map((item,index)=>(
+
+
+
+      {
+
+        activities.length === 0 ?
+
+
+
+        (
+
+          <div
+
+            className="
+            text-center
+            text-sm
+            text-gray-400
+            py-6
+            "
+
+          >
+
+            No recent activity
+
+
+          </div>
+
+
+        )
+
+
+
+        :
+
+
+
+        activities
+
+        .slice(0,3)
+
+        .map((item,index)=>(
+
+
+
+          <div
+
+
+            key={index}
+
+
+            className="
+            flex
+            items-center
+            gap-3
+            bg-gray-50
+            rounded-lg
+            p-3
+            hover:bg-gray-100
+            transition
+            "
+
+          >
+
+
+
+
+
+
+
+            {/* ICON */}
+
 
 
             <div
 
-              key={index}
 
-              className="
+              className={`
+
+              w-9
+              h-9
+              rounded-full
               flex
               items-center
-              gap-3
-              bg-gray-50
-              rounded-lg
-              p-3
+              justify-center
+
+              ${
+                item.type === "lead"
+
+                ?
+
+                "bg-purple-100 text-purple-600"
+
+                :
+
+                "bg-blue-100 text-blue-600"
+
+              }
+
+              `}
+
+
+            >
+
+
+
+              {
+
+
+                item.type === "lead"
+
+                ?
+
+                <UserPlus size={16}/>
+
+                :
+
+                <Users size={16}/>
+
+
+              }
+
+
+
+            </div>
+
+
+
+
+
+
+
+
+
+            {/* CONTENT */}
+
+
+
+            <div
+
+              className="
+              flex-1
               "
 
             >
 
 
 
-              {/* ICON */}
+              <p
 
-              <div
                 className="
-                w-9
-                h-9
-                rounded-full
-                bg-blue-100
-                text-blue-600
-                flex
-                items-center
-                justify-center
+                text-sm
+                font-medium
+                text-gray-800
                 "
+
               >
 
-                {
-                  item.icon ||
-                  <Users size={16}/>
-                }
-
-              </div>
+                {item.title}
 
 
-
-
-
-
-              {/* CONTENT */}
-
-
-              <div
-                className="
-                flex-1
-                "
-              >
-
-
-                <p
-                  className="
-                  text-sm
-                  font-medium
-                  text-gray-800
-                  "
-                >
-
-                  {item.title}
-
-                </p>
-
-
-
-
-                <p
-                  className="
-                  text-xs
-                  text-gray-500
-                  "
-                >
-
-                  {item.description}
-
-                </p>
-
-
-              </div>
+              </p>
 
 
 
@@ -208,19 +302,20 @@ function ActivityCard({ stats }) {
 
 
 
-              {/* TIME */}
+              <p
 
-
-              <span
                 className="
                 text-xs
-                text-gray-400
+                text-gray-500
                 "
+
               >
 
-                {item.time || <Clock size={13}/>}
+                {item.description}
 
-              </span>
+
+              </p>
+
 
 
 
@@ -229,8 +324,66 @@ function ActivityCard({ stats }) {
             </div>
 
 
-          ))
-        }
+
+
+
+
+
+
+
+            {/* TIME */}
+
+
+
+            <span
+
+              className="
+              text-xs
+              text-gray-400
+              flex
+              items-center
+              gap-1
+              "
+
+            >
+
+
+
+              {
+
+                item.time
+
+                ?
+
+                item.time
+
+                :
+
+                <Clock size={13}/>
+
+              }
+
+
+
+            </span>
+
+
+
+
+
+
+
+
+          </div>
+
+
+
+        ))
+
+      }
+
+
+
 
 
       </div>
@@ -243,18 +396,22 @@ function ActivityCard({ stats }) {
 
 
 
-      {/* ACTIVITY DRAWER */}
+
 
 
       <ActivityDrawer
 
+
         open={showActivities}
 
-        onClose={() =>
+
+        onClose={()=>
           setShowActivities(false)
         }
 
+
         activities={activities}
+
 
       />
 
@@ -263,7 +420,11 @@ function ActivityCard({ stats }) {
 
 
 
+
+
+
     </div>
+
 
   );
 

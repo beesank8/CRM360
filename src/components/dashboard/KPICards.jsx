@@ -9,52 +9,123 @@ import {
 
 function KPICards({ stats }) {
 
- const cards = [
 
-  {
-    title: "Total Customers",
-    value: stats?.customers || 0,
-    growth: `+${stats?.customerGrowth || 0}%`,
-    subtitle: "Compared to last month",
-    icon: <Users size={22} />,
-    bg: "bg-blue-100",
-    color: "text-blue-600"
-  },
+  const cards = [
 
 
-  {
-    title: "Active Leads",
-    value: stats?.newLeads || 0,
-    growth: `+${stats?.leadGrowth || 0}%`,
-    subtitle: "New leads today",
-    icon: <UserPlus size={22} />,
-    bg: "bg-purple-100",
-    color: "text-purple-600"
-  },
+    {
+      title: "Total Customers",
+
+      value:
+        stats?.customers || 0,
+
+      growth:
+        `+${stats?.customerGrowth || 0}%`,
+
+      subtitle:
+        "Total registered customers",
+
+      icon:
+        <Users size={22} />,
+
+      bg:
+        "bg-blue-100",
+
+      color:
+        "text-blue-600"
+
+    },
 
 
-  {
-    title: "Monthly Revenue",
-    value: `₹${stats?.revenue || 0}`,
-    growth: `+${stats?.revenueGrowth || 0}%`,
-    subtitle: "Revenue growth",
-    icon: <IndianRupee size={22} />,
-    bg: "bg-green-100",
-    color: "text-green-600"
-  },
 
 
-  {
-    title: "Growth Rate",
-    value: `${stats?.growth || 0}%`,
-    growth: `+${stats?.growth || 0}%`,
-    subtitle: "Business growth",
-    icon: <TrendingUp size={22} />,
-    bg: "bg-orange-100",
-    color: "text-orange-600"
-  }
 
-];
+    {
+      title: "Total Leads",
+
+      value:
+        stats?.leads || 0,
+
+      growth:
+        `+${stats?.leadGrowth || 0}%`,
+
+      subtitle:
+        "Total active leads",
+
+      icon:
+        <UserPlus size={22} />,
+
+      bg:
+        "bg-purple-100",
+
+      color:
+        "text-purple-600"
+
+    },
+
+
+
+
+
+
+
+    {
+      title: "Revenue",
+
+      value:
+        `₹${Number(stats?.revenue || 0).toLocaleString("en-IN")}`,
+
+      growth:
+        `+${stats?.revenueGrowth || 0}%`,
+
+      subtitle:
+        "Converted lead revenue",
+
+      icon:
+        <IndianRupee size={22} />,
+
+      bg:
+        "bg-green-100",
+
+      color:
+        "text-green-600"
+
+    },
+
+
+
+
+
+
+
+
+    {
+      title: "Growth Rate",
+
+      value:
+        `${stats?.growth || 0}%`,
+
+      growth:
+        `+${stats?.growth || 0}%`,
+
+      subtitle:
+        "Business growth",
+
+      icon:
+        <TrendingUp size={22} />,
+
+      bg:
+        "bg-orange-100",
+
+      color:
+        "text-orange-600"
+
+    }
+
+
+  ];
+
+
 
 
 
@@ -67,7 +138,7 @@ function KPICards({ stats }) {
       grid-cols-1
       sm:grid-cols-2
       xl:grid-cols-4
-      gap-3
+      gap-4
       "
     >
 
@@ -78,25 +149,28 @@ function KPICards({ stats }) {
 
 
           <div
+
             key={index}
+
             className="
             bg-white
-            rounded-xl
+            rounded-2xl
             border
             border-gray-200
             shadow-sm
             hover:shadow-md
             transition
             duration-300
-            p-4
+            p-5
             "
+
           >
 
 
 
 
 
-            {/* TOP SECTION */}
+            {/* TOP */}
 
             <div
               className="
@@ -108,20 +182,24 @@ function KPICards({ stats }) {
 
 
 
+
               <div
+
                 className={`
-                w-11
-                h-11
-                rounded-lg
+                w-12
+                h-12
+                rounded-xl
                 flex
                 items-center
                 justify-center
                 ${card.bg}
                 ${card.color}
                 `}
+
               >
 
                 {card.icon}
+
 
               </div>
 
@@ -131,16 +209,19 @@ function KPICards({ stats }) {
 
 
 
+
               <div
+
                 className="
                 flex
                 items-center
                 gap-1
                 text-green-600
                 "
+
               >
 
-                <ArrowUpRight size={14}/>
+                <ArrowUpRight size={15}/>
 
 
                 <span
@@ -159,7 +240,9 @@ function KPICards({ stats }) {
 
 
 
+
             </div>
+
 
 
 
@@ -170,15 +253,19 @@ function KPICards({ stats }) {
 
             {/* TITLE */}
 
+
             <p
+
               className="
-              text-xs
+              text-sm
               text-gray-500
-              mt-3
+              mt-4
               "
+
             >
 
               {card.title}
+
 
             </p>
 
@@ -188,18 +275,24 @@ function KPICards({ stats }) {
 
 
 
+
+
             {/* VALUE */}
 
+
             <h2
+
               className="
-              text-2xl
+              text-3xl
               font-bold
               text-gray-800
               mt-1
               "
+
             >
 
               {card.value}
+
 
             </h2>
 
@@ -209,17 +302,23 @@ function KPICards({ stats }) {
 
 
 
+
+
             {/* SUBTITLE */}
 
+
             <p
+
               className="
               text-xs
               text-gray-400
-              mt-1
+              mt-2
               "
+
             >
 
               {card.subtitle}
+
 
             </p>
 
@@ -231,6 +330,7 @@ function KPICards({ stats }) {
 
 
         ))
+
       }
 
 
@@ -241,6 +341,7 @@ function KPICards({ stats }) {
 
 
   );
+
 
 }
 

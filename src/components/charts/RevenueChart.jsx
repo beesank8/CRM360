@@ -5,7 +5,7 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
-  ResponsiveContainer
+  ResponsiveContainer,
 } from "recharts";
 
 
@@ -14,7 +14,64 @@ function RevenueChart({ stats }) {
 
 
 
-  const data = stats?.revenueData || [];
+  // Demo analytics data
+  // Later this will come from backend analytics API
+
+  const data = [
+
+
+    {
+      month: "Jan",
+      revenue: 45000,
+      leads: 35,
+    },
+
+
+    {
+      month: "Feb",
+      revenue: 62000,
+      leads: 48,
+    },
+
+
+    {
+      month: "Mar",
+      revenue: 58000,
+      leads: 42,
+    },
+
+
+    {
+      month: "Apr",
+      revenue: 85000,
+      leads: 65,
+    },
+
+
+    {
+      month: "May",
+      revenue: 98000,
+      leads: 78,
+    },
+
+
+    {
+      month: "Jun",
+      revenue: 125000,
+      leads: 95,
+    },
+
+
+    {
+      month: "Jul",
+      revenue: 150000,
+      leads: 120,
+    },
+
+
+  ];
+
+
 
 
 
@@ -23,60 +80,205 @@ function RevenueChart({ stats }) {
   return (
 
 
-    <ResponsiveContainer
-      width="100%"
-      height="100%"
+
+    <div
+
+      className="
+      w-full
+      h-full
+      "
+
     >
 
 
-      <LineChart
-        data={data}
+
+
+      <ResponsiveContainer
+
+        width="100%"
+
+        height="100%"
+
       >
 
 
 
-        <CartesianGrid
-          strokeDasharray="3 3"
-        />
+        <LineChart
 
+          data={data}
 
+          margin={{
 
-        <XAxis
-          dataKey="month"
-        />
+            top: 10,
 
+            right: 20,
 
+            left: 10,
 
-        <YAxis />
+            bottom: 10,
 
-
-
-        <Tooltip />
-
-
-
-        <Line
-
-          type="monotone"
-
-          dataKey="revenue"
-
-          stroke="#2563eb"
-
-          strokeWidth={3}
-
-          dot={{
-            r:4
           }}
 
-        />
+        >
 
 
 
-      </LineChart>
+
+          <CartesianGrid
+
+            strokeDasharray="3 3"
+
+          />
 
 
-    </ResponsiveContainer>
+
+
+
+
+          <XAxis
+
+            dataKey="month"
+
+          />
+
+
+
+
+
+
+
+          <YAxis
+
+            tickFormatter={(value)=>
+
+              `₹${value / 1000}k`
+
+            }
+
+          />
+
+
+
+
+
+
+
+          <Tooltip
+
+
+            formatter={(value, name)=>{
+
+
+              if(name==="revenue"){
+
+                return [
+
+                  `₹${value.toLocaleString("en-IN")}`,
+
+                  "Revenue"
+
+                ];
+
+              }
+
+
+
+              return [
+
+                value,
+
+                "Leads"
+
+              ];
+
+
+            }}
+
+
+          />
+
+
+
+
+
+
+
+
+
+
+
+          <Line
+
+
+            type="monotone"
+
+
+            dataKey="revenue"
+
+
+            name="revenue"
+
+
+            strokeWidth={3}
+
+
+            dot={{
+
+              r:5
+
+            }}
+
+
+          />
+
+
+
+
+
+
+          <Line
+
+
+            type="monotone"
+
+
+            dataKey="leads"
+
+
+            name="leads"
+
+
+            strokeWidth={3}
+
+
+            dot={{
+
+              r:5
+
+            }}
+
+
+          />
+
+
+
+
+
+
+        </LineChart>
+
+
+
+
+
+      </ResponsiveContainer>
+
+
+
+
+
+    </div>
+
 
 
   );

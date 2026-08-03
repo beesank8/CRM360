@@ -1,91 +1,136 @@
 import { Outlet } from "react-router-dom";
 
 import Sidebar from "./Sidebar";
-import DashboardNavbar from "./DashboardNavbar";
-import Footer from "./Footer";
+import Navbar from "./Navbar";
+
 
 
 function DashboardLayout() {
 
 
-  return (
-
-    <div
-      className="
-      h-screen
-      flex
-      overflow-hidden
-      bg-gray-100
-      "
-    >
+return (
 
 
-      {/* SIDEBAR */}
+<div
 
-      <Sidebar />
+className="
+min-h-screen
+flex
+bg-gray-100
+"
+
+>
 
 
 
+{/* SIDEBAR */}
 
+<div
 
-      {/* RIGHT SECTION */}
+className="
+fixed
+left-0
+top-0
+h-screen
+w-64
+bg-white
+border-r
+z-40
+"
 
-      <div
-        className="
-        flex-1
-        flex
-        flex-col
-        min-w-0
-        overflow-hidden
-        "
-      >
+>
 
+<Sidebar />
 
-
-        {/* NAVBAR */}
-
-        <DashboardNavbar />
-
-
-
-
-
-        {/* CONTENT AREA */}
-
-        <main
-          className="
-          flex-1
-          overflow-hidden
-          p-3
-          lg:p-4
-          min-h-0
-          "
-        >
-
-          <Outlet />
-
-        </main>
+</div>
 
 
 
 
 
 
-        {/* FOOTER */}
-
-        <Footer />
 
 
 
-      </div>
+{/* MAIN AREA */}
+
+<div
+
+className="
+ml-64
+flex-1
+min-h-screen
+flex
+flex-col
+"
+
+>
 
 
 
-    </div>
 
-  );
+
+{/* NAVBAR */}
+
+<div
+
+className="
+sticky
+top-0
+z-30
+bg-white
+"
+
+>
+
+<Navbar />
+
+</div>
+
+
+
+
+
+
+
+
+{/* PAGE CONTENT */}
+
+<main
+
+className="
+flex-1
+p-6
+"
+
+>
+
+
+<Outlet />
+
+
+</main>
+
+
+
+
+
+
+
+</div>
+
+
+
+
+
+</div>
+
+
+);
+
 
 }
+
 
 
 export default DashboardLayout;

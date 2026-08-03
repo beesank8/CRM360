@@ -1,146 +1,142 @@
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
+
 import {
   Search,
-  Plus,
-  Edit,
-  Trash2
+  Plus
 } from "lucide-react";
+
 
 import api from "../services/api";
 
+
 import AddCustomerModal from "../components/customers/AddCustomerModal";
 import EditCustomerModal from "../components/customers/EditCustomerModal";
+import CustomerTable from "../components/customers/CustomerTable";
+import CustomerKPICards from "../components/customers/CustomerKPICards";
+import CustomerDetailsDrawer from "../components/customers/CustomerDetailsDrawer";
+
+
 
 
 
 function Customers() {
 
 
-  const [customers, setCustomers] = useState([]);
 
-  const [loading, setLoading] = useState(true);
+const [customers,setCustomers] = useState([]);
 
-  const [search, setSearch] = useState("");
+const [loading,setLoading] = useState(true);
 
-  const [showAddModal, setShowAddModal] = useState(false);
+const [search,setSearch] = useState("");
 
-  const [editCustomer, setEditCustomer] = useState(null);
+const [showAddModal,setShowAddModal] = useState(false);
 
+const [editCustomer,setEditCustomer] = useState(null);
 
+const [selectedCustomer,setSelectedCustomer] = useState(null);
 
+const [customerStats,setCustomerStats] = useState(null);
 
 
-  useEffect(()=>{
 
-    fetchCustomers();
 
-  }, []);
 
 
 
 
 
-  const fetchCustomers = async()=>{
+useEffect(()=>{
 
+fetchCustomers();
 
-    try{
+},[]);
 
 
-      setLoading(true);
 
 
-      const res = await api.get("/customers");
 
 
-      setCustomers(
-        res.data.customers || []
-      );
 
 
-    }
-    catch(error){
 
+const fetchCustomers = async()=>{
 
-      console.error(error);
 
+try{
 
-      toast.error(
-        "Failed to load customers"
-      );
 
+setLoading(true);
 
-    }
-    finally{
 
 
-      setLoading(false);
+const response =
+await api.get("/customers");
 
 
-    }
 
+const data =
+response.data.customers || response.data || [];
 
-  };
 
 
+setCustomers(data);
 
 
 
 
 
 
-  const deleteCustomer = async(id)=>{
+setCustomerStats({
 
 
-    const confirmDelete =
-      window.confirm(
-        "Are you sure you want to delete this customer?"
-      );
 
+totalCustomers:
+data.length,
 
 
-    if(!confirmDelete)
-      return;
 
 
 
+activeCustomers:
 
-    try{
+data.filter(
 
+customer =>
+(customer.status || "Active")
+==="Active"
 
-      await api.delete(
-        `/customers/${id}`
-      );
+).length,
 
 
 
-      toast.success(
-        "Customer deleted successfully"
-      );
 
 
 
-      fetchCustomers();
+todayCustomers:
 
+data.filter(customer=>{
 
 
-    }
-    catch(error){
+const today =
+new Date();
 
 
-      console.error(error);
+const created =
+new Date(customer.createdAt);
 
 
-      toast.error(
-        "Delete failed"
-      );
 
+return (
 
-    }
+created.toDateString()
+===
+today.toDateString()
 
+);
 
-  };
 
+}).length,
 
 
 
@@ -148,49 +144,212 @@ function Customers() {
 
 
 
-  const filteredCustomers =
-    customers.filter((customer)=>{
+companies:
 
+new Set(
 
-      const text =
-        search.toLowerCase();
+data.map(
 
+customer=>customer.company
 
+)
 
-      return (
+).size
 
-        customer.name
-        ?.toLowerCase()
-        .includes(text)
 
 
 
-        ||
 
-        customer.email
-        ?.toLowerCase()
-        .includes(text)
+});
 
 
 
-        ||
 
-        customer.company
-        ?.toLowerCase()
-        .includes(text)
 
+}
 
 
-        ||
+catch(error){
 
-        customer.phone
-        ?.includes(search)
 
+console.log(error);
 
-      );
 
+toast.error(
+"Failed to load customers"
+);
 
-    });
+
+}
+
+
+
+finally{
+
+
+setLoading(false);
+
+
+}
+
+
+
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+const deleteCustomer = async(id)=>{
+
+
+
+const confirmDelete =
+
+window.confirm(
+
+"Are you sure you want to delete this customer?"
+
+);
+
+
+
+if(!confirmDelete)
+return;
+
+
+
+
+
+try{
+
+
+await api.delete(
+
+`/customers/${id}`
+
+);
+
+
+
+
+toast.success(
+
+"Customer deleted successfully"
+
+);
+
+
+
+
+fetchCustomers();
+
+
+
+}
+
+
+
+catch(error){
+
+
+console.log(error);
+
+
+toast.error(
+"Delete failed"
+);
+
+
+
+}
+
+
+
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+const filteredCustomers =
+
+customers.filter(customer=>{
+
+
+const keyword =
+search.toLowerCase();
+
+
+
+return (
+
+
+customer.name
+?.toLowerCase()
+.includes(keyword)
+
+
+
+||
+
+
+
+customer.email
+?.toLowerCase()
+.includes(keyword)
+
+
+
+||
+
+
+
+customer.company
+?.toLowerCase()
+.includes(keyword)
+
+
+
+||
+
+
+
+customer.phone
+?.includes(search)
+
+
+
+);
+
+
+
+});
+
+
+
+
+
+
+
 
 
 
@@ -200,38 +359,66 @@ function Customers() {
 
 return (
 
-<div className="space-y-6">
+
+
+<div
+
+className="
+space-y-6
+"
+
+>
 
 
 
 
 
-{/* Header */}
 
-<div className="
+{/* HEADER */}
+
+
+
+<div
+
+className="
 flex
 justify-between
 items-center
-">
+"
+
+>
+
 
 
 <div>
 
 
-<h1 className="
+<h1
+
+className="
 text-3xl
 font-bold
 text-gray-800
-">
+"
+
+>
 
 Customers
 
 </h1>
 
 
-<p className="text-gray-500">
 
-Manage your customers
+<p
+
+className="
+text-gray-500
+mt-1
+"
+
+>
+
+Manage your customer relationships
 
 </p>
 
@@ -243,9 +430,13 @@ Manage your customers
 
 
 
+
+
 <button
 
+
 onClick={()=>setShowAddModal(true)}
+
 
 className="
 flex
@@ -257,12 +448,14 @@ px-5
 py-3
 rounded-xl
 hover:bg-blue-700
+transition
 "
 
 >
 
 
 <Plus size={18}/>
+
 
 Add Customer
 
@@ -271,6 +464,7 @@ Add Customer
 
 
 
+
 </div>
 
 
@@ -281,42 +475,90 @@ Add Customer
 
 
 
-{/* Search */}
 
-<div className="
+
+
+
+{/* KPI CARDS */}
+
+
+
+<CustomerKPICards
+
+stats={customerStats}
+
+/>
+
+
+
+
+
+
+
+
+
+
+
+
+{/* SEARCH */}
+
+
+
+<div
+
+className="
 bg-white
-rounded-xl
-shadow
+rounded-2xl
+border
+border-gray-200
+shadow-sm
 p-4
 flex
 items-center
 gap-3
-">
+"
+
+>
 
 
 <Search
+
 size={20}
-className="text-gray-400"
+
+className="
+text-gray-400
+"
+
 />
+
 
 
 
 <input
 
+
 type="text"
+
 
 placeholder="Search customers..."
 
+
 value={search}
 
-onChange={(e)=>setSearch(e.target.value)}
+
+onChange={(e)=>
+setSearch(e.target.value)
+}
+
 
 className="
 w-full
 outline-none
+text-gray-700
 "
 
 />
+
 
 
 </div>
@@ -329,293 +571,69 @@ outline-none
 
 
 
-{/* Table */}
-
-
-<div className="
-bg-white
-rounded-xl
-shadow
-overflow-hidden
-">
-
-
-<table className="w-full">
-
-
-
-<thead className="bg-gray-100">
-
-
-<tr>
-
-
-<th className="px-6 py-4 text-left">
-Name
-</th>
-
-
-<th className="px-6 py-4 text-left">
-Email
-</th>
-
-
-<th className="px-6 py-4 text-left">
-Company
-</th>
-
-
-<th className="px-6 py-4 text-left">
-Phone
-</th>
-
-
-<th className="px-6 py-4 text-left">
-Status
-</th>
-
-
-<th className="px-6 py-4 text-center">
-Action
-</th>
-
-
-</tr>
-
-
-</thead>
 
 
 
 
 
+{/* TABLE */}
 
-
-<tbody>
 
 
 {
 
-loading ? (
+
+loading ?
 
 
-<tr>
 
-<td
-colSpan="6"
-className="
-text-center
-py-10
-"
->
-
-Loading...
-
-</td>
-
-</tr>
-
-
-)
-
-:
-
-filteredCustomers.length===0 ? (
-
-
-<tr>
-
-<td
-
-colSpan="6"
+<div
 
 className="
+bg-white
+rounded-2xl
+p-10
 text-center
-py-10
 text-gray-500
 "
 
 >
 
-No customers found
+Loading customers...
 
-</td>
-
-
-</tr>
+</div>
 
 
-)
 
 
 :
 
-filteredCustomers.map((customer)=>(
 
 
 
-<tr
+<CustomerTable
 
-key={customer._id}
 
-className="
-border-t
-hover:bg-gray-50
-"
+customers={filteredCustomers}
 
->
 
+onViewCustomer={setSelectedCustomer}
 
 
-<td className="
-px-6
-py-4
-font-semibold
-">
+onEditCustomer={setEditCustomer}
 
-{customer.name}
 
-</td>
+onDeleteCustomer={deleteCustomer}
 
 
+/>
 
-
-
-<td className="px-6 py-4">
-
-{customer.email}
-
-</td>
-
-
-
-
-
-<td className="px-6 py-4">
-
-{customer.company}
-
-</td>
-
-
-
-
-
-<td className="px-6 py-4">
-
-{customer.phone}
-
-</td>
-
-
-
-
-
-<td className="px-6 py-4">
-
-
-<span
-
-className="
-bg-green-100
-text-green-700
-px-3
-py-1
-rounded-full
-text-sm
-"
-
->
-
-{customer.status}
-
-</span>
-
-
-</td>
-
-
-
-
-
-
-
-<td className="
-px-6
-py-4
-text-center
-">
-
-
-<button
-
-onClick={()=>
-setEditCustomer(customer)
-}
-
-className="
-text-blue-600
-mr-4
-hover:scale-110
-"
-
->
-
-
-<Edit size={18}/>
-
-
-</button>
-
-
-
-
-
-
-<button
-
-onClick={()=>
-deleteCustomer(customer._id)
-}
-
-className="
-text-red-600
-hover:scale-110
-"
-
->
-
-
-<Trash2 size={18}/>
-
-
-</button>
-
-
-
-</td>
-
-
-
-
-</tr>
-
-
-
-))
 
 
 }
 
 
 
-</tbody>
-
-
-</table>
-
-
-</div>
 
 
 
@@ -625,21 +643,29 @@ hover:scale-110
 
 
 
-{/* Add Modal */}
+
+{/* ADD CUSTOMER */}
+
+
 
 {
+
 
 showAddModal &&
 
+
+
 <AddCustomerModal
 
-onClose={()=>
-setShowAddModal(false)
-}
+
+onClose={()=>setShowAddModal(false)}
+
 
 onSuccess={fetchCustomers}
 
+
 />
+
 
 }
 
@@ -649,35 +675,111 @@ onSuccess={fetchCustomers}
 
 
 
-{/* Edit Modal */}
+
+
+
+
+
+
+{/* EDIT CUSTOMER */}
+
+
 
 {
 
+
 editCustomer &&
+
+
 
 <EditCustomerModal
 
+
 customer={editCustomer}
 
-onClose={()=>
-setEditCustomer(null)
-}
+
+onClose={()=>setEditCustomer(null)}
+
 
 onSuccess={fetchCustomers}
 
+
 />
 
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+{/* CUSTOMER DETAILS DRAWER */}
+
+
+
+<CustomerDetailsDrawer
+
+
+customer={selectedCustomer}
+
+
+onClose={()=>setSelectedCustomer(null)}
+
+
+
+
+onEditCustomer={(customer)=>{
+
+
+setSelectedCustomer(null);
+
+
+setEditCustomer(customer);
+
+
+}}
+
+
+
+
+
+onDeleteCustomer={(id)=>{
+
+
+setSelectedCustomer(null);
+
+
+deleteCustomer(id);
+
+
+}}
+
+
+/>
+
+
+
 
 
 
 
 </div>
+
 
 );
 
 
+
 }
+
 
 
 export default Customers;

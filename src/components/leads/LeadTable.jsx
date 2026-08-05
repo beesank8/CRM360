@@ -1,9 +1,9 @@
 import {
   Eye,
+  UserCheck,
   Pencil,
   Trash2
 } from "lucide-react";
-
 
 
 function LeadTable({
@@ -11,6 +11,8 @@ function LeadTable({
   leads,
 
   onViewLead,
+
+  onConvertLead,
 
   onEditLead,
 
@@ -691,7 +693,6 @@ py-5
 
 >
 
-
 <div
 
 className="
@@ -702,9 +703,7 @@ gap-2
 
 >
 
-
-
-
+{/* VIEW */}
 
 <button
 
@@ -729,36 +728,60 @@ title="View Lead"
 
 
 
+{/* CONVERT */}
 
+{
 
+lead.status === "Converted"
 
+?
+
+<span
+
+className="
+px-2
+py-2
+rounded-lg
+bg-green-100
+text-green-700
+text-xs
+font-semibold
+"
+
+>
+
+✓
+
+</span>
+
+:
 
 <button
 
-onClick={()=>onEditLead(lead)}
+onClick={()=>onConvertLead(lead)}
 
 className="
 p-2
 rounded-lg
-bg-yellow-50
-text-yellow-600
-hover:bg-yellow-100
+bg-green-50
+text-green-600
+hover:bg-green-100
 transition
 "
 
-title="Edit Lead"
+title="Convert Lead"
 
 >
 
-<Pencil size={17}/>
+<UserCheck size={17}/>
 
 </button>
 
+}
 
 
 
-
-
+{/* DELETE */}
 
 <button
 
@@ -783,11 +806,30 @@ title="Delete Lead"
 
 
 
+{/* EDIT */}
 
+<button
 
+onClick={()=>onEditLead(lead)}
+
+className="
+p-2
+rounded-lg
+bg-yellow-50
+text-yellow-600
+hover:bg-yellow-100
+transition
+"
+
+title="Edit Lead"
+
+>
+
+<Pencil size={17}/>
+
+</button>
 
 </div>
-
 
 </td>
 

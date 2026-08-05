@@ -15,7 +15,8 @@ import LeadDetailsDrawer from "../components/leads/LeadDetailsDrawer";
 
 import {
   getLeads,
-  createLead
+  createLead,
+  convertLead
 } from "../services/leadService";
 
 
@@ -727,22 +728,12 @@ Loading leads...
 
 
 <LeadTable
-
-
-leads={filteredLeads}
-
-
-onViewLead={setSelectedLead}
-
-
-onEditLead={setEditLead}
-
-
-onDeleteLead={deleteLead}
-
-
+  leads={filteredLeads}
+  onViewLead={handleViewLead}
+  onConvertLead={handleConvertLead}
+  onDeleteLead={handleDeleteLead}
+  onEditLead={handleEditLead}
 />
-
 
 
 }
@@ -846,6 +837,68 @@ onDeleteLead={(id)=>{
 
 
 setSelectedLead(null);
+// ==============================
+// VIEW LEAD
+// ==============================
+
+const handleViewLead = (lead) => {
+
+  setSelectedLead(lead);
+
+};
+
+
+// ==============================
+// EDIT LEAD
+// ==============================
+
+const handleEditLead = (lead) => {
+
+  setEditLead(lead);
+
+};
+
+
+// ==============================
+// DELETE LEAD
+// ==============================
+
+const handleDeleteLead = (id) => {
+
+  deleteLead(id);
+
+};
+
+
+// ==============================
+// CONVERT LEAD
+// ==============================
+
+const handleConvertLead = async (lead) => {
+
+  const confirmConvert = window.confirm(
+    `Convert "${lead.name}" into a customer?`
+  );
+
+  if (!confirmConvert) return;
+
+  try {
+
+    await convertLead(lead._id);
+
+    toast.success("Lead converted successfully");
+
+    loadLeads();
+
+  } catch (error) {
+
+    console.error(error);
+
+    toast.error("Unable to convert lead");
+
+  }
+
+};
 
 
 deleteLead(id);
